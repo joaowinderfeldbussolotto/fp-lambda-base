@@ -1,5 +1,4 @@
-if true && false 
-  then
-    2 + 3
-  else 
-    3 + 5
+if true && false then 
+  2 + 5 + 7
+else 
+  5 + 2
