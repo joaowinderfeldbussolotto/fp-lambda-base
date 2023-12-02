@@ -24,19 +24,30 @@ import Lexer
     "->"        { TokenArrow }
     '('         { TokenLParen }
     ')'         { TokenRParen }
+    '='         { TokenEq }
+    let         { TokenLet }
+    in          { TokenIn }
+    Bool        { TokenBoolean }
+    Num         { TokenNumber }
+    ':'         { TokenColon }
 
 %%
 
-Exp         : num                       { Num $1 }
-            | true                      { BTrue }
-            | false                     { BFalse }
-            | Exp '+' Exp               { Add $1 $3 }
-            | Exp "&&" Exp              { And $1 $3 }
-            | if Exp then Exp else Exp  { If $2 $4 $6 }
-            | var                       { Var $1 }
-            | '\\' var "->" Exp         { Lam $2 $4 }
-            | Exp Exp                   { App $1 $2 }
-            | '(' Exp ')'               { Paren $2 }
+Exp         : num                           { Num $1 }
+            | true                          { BTrue }
+            | false                         { BFalse }
+            | Exp '+' Exp                   { Add $1 $3 }
+            | Exp "&&" Exp                  { And $1 $3 }
+            | if Exp then Exp else Exp      { If $2 $4 $6 }
+            | var                           { Var $1 }
+            | '\\' var ':' Type "->" Exp    { Lam $2 $4 $6 }
+            | Exp Exp                       { App $1 $2 }
+            | '(' Exp ')'                   { Paren $2 }
+            | let var '=' Exp in Exp        { Let $2 $4 $6 }
+
+Type    : Bool                              { TBool }
+        | Num                               { TNum }
+        | '(' Type "->" Type ')'            { TFun $2 $4 }
 
 {
 
