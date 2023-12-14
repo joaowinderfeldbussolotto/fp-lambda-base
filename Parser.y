@@ -13,6 +13,7 @@ import Lexer
 %token 
     num         { TokenNum $$ }
     '+'         { TokenAdd }
+    '-'         { TokenSub }
     "&&"        { TokenAnd }
     true        { TokenTrue }
     false       { TokenFalse }
@@ -37,6 +38,7 @@ Exp         : num                           { Num $1 }
             | true                          { BTrue }
             | false                         { BFalse }
             | Exp '+' Exp                   { Add $1 $3 }
+            | Exp '-' Exp                   { Sub $1 $3 }
             | Exp "&&" Exp                  { And $1 $3 }
             | if Exp then Exp else Exp      { If $2 $4 $6 }
             | var                           { Var $1 }

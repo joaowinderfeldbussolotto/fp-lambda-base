@@ -13,6 +13,11 @@ typeof ctx (Num _) = Just TNum
 typeof ctx (Add e1 e2) = case (typeof ctx e1, typeof ctx e2) of 
                        (Just TNum, Just TNum) -> Just TNum 
                        _                      -> Nothing
+-- sub operator
+typeof ctx (Sub e1 e2) = case (typeof ctx e1, typeof ctx e2) of
+                        (Just TNum, Just TNum) -> Just TNum 
+                        _                      -> Nothing
+
 typeof ctx (And e1 e2) = case (typeof ctx e1, typeof ctx e2) of 
                        (Just TBool, Just TBool) -> Just TBool 
                        _                        -> Nothing

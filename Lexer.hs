@@ -13,6 +13,8 @@ data Expr = BTrue
           | App Expr Expr
           | Paren Expr
           | Let String Expr Expr 
+          | Mul Expr Expr
+          | Sub Expr Expr
           deriving Show
 
 data Ty = TBool 
@@ -39,6 +41,8 @@ data Token = TokenTrue
            | TokenColon
            | TokenBoolean 
            | TokenNumber
+           | TokenMul
+           | TokenSub
            deriving (Show, Eq)
 
 isSymb :: Char -> Bool 
@@ -61,6 +65,8 @@ lexNum cs = case span isDigit cs of
 lexSymbol :: String -> [Token]
 lexSymbol cs = case span isSymb cs of 
                  ("+", rest)  -> TokenAdd : lexer rest 
+                 ("*", rest) -> TokenMul : lexer rest
+                 ("-", rest) -> TokenSub : lexer rest
                  ("&&", rest) -> TokenAnd : lexer rest 
                  ("\\", rest) -> TokenLam : lexer rest 
                  ("->", rest) -> TokenArrow : lexer rest 
