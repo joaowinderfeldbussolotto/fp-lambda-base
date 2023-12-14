@@ -46,7 +46,7 @@ data Token = TokenTrue
            deriving (Show, Eq)
 
 isSymb :: Char -> Bool 
-isSymb c = c `elem` "+&\\->()=:"
+isSymb c = c `elem` "+&\\->()=:*"
 
 lexer :: String -> [Token]
 lexer [] = [] 
