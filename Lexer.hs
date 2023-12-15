@@ -6,6 +6,7 @@ data Expr = BTrue
           | BFalse 
           | Num Int 
           | Equality Expr Expr
+          | Not Expr
           | Add Expr Expr 
           | And Expr Expr 
           | Or Expr Expr
@@ -29,7 +30,8 @@ data Token = TokenTrue
            | TokenNum Int 
            | TokenAdd
            | TokenOr
-           | TokenEquality
+           | TokenEquality 
+           | TokenNot
            | TokenAnd 
            | TokenIf 
            | TokenThen 
@@ -50,7 +52,7 @@ data Token = TokenTrue
            deriving (Show, Eq)
 
 isSymb :: Char -> Bool 
-isSymb c = c `elem` "+&\\->()=:*|"
+isSymb c = c `elem` "+&\\->()=:*|!"
 
 lexer :: String -> [Token]
 lexer [] = [] 
@@ -78,6 +80,7 @@ lexSymbol cs = case span isSymb cs of
                  ("=", rest)  -> TokenEq : lexer rest 
                  ("==", rest) -> TokenEquality : lexer rest 
                  (":", rest)  -> TokenColon : lexer rest 
+                 ("!", rest) -> TokenNot : lexer rest 
                  _ -> error "Lexical error: invalid symbol!"
 
 lexKW :: String -> [Token]

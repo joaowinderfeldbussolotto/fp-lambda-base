@@ -32,7 +32,10 @@ typeof ctx (Equality e1 e2) = case (typeof ctx e1, typeof ctx e2) of
                             (Just TBool, Just TBool) -> Just TBool
                             (Just TNum, Just TNum)   -> Just TBool
                             _                       -> Nothing
-
+-- not operator
+typeof ctx (Not e1) = case (typeof ctx e1) of 
+                           (Just TBool) -> Just TBool 
+                           _                         -> Nothing
 
 typeof ctx (And e1 e2) = case (typeof ctx e1, typeof ctx e2) of 
                        (Just TBool, Just TBool) -> Just TBool 
