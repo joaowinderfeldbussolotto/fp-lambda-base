@@ -17,6 +17,8 @@ subst x n (Var v) = if (x == v) then
                       (Var v)
 subst x n (Lam v t b) = Lam v t (subst x n b)
 subst x n (Equality e1 e2) = Equality (subst x n e1) (subst x n e2)
+subst x n (LessThan e1 e2) = LessThan (subst x n e1) (subst x n e2)
+subst x n (GreaterThan e1 e2) = GreaterThan (subst x n e1) (subst x n e2)
 subst x n (Not e) = Not (subst x n e) 
 subst x n (App e1 e2) = App (subst x n e1) (subst x n e2)
 subst x n (Add e1 e2) = Add (subst x n e1) (subst x n e2)
@@ -52,7 +54,9 @@ step (And BTrue e) = e
 step (And e1 e2) = And (step e1) e2
 step (If BFalse e1 e2) = e2 
 step (If BTrue e1 e2) = e1 
-step (If e e1 e2) = If (step e) e1 e2 
+step (If e e1 e2) = If (step e) e1 e2
+step (LessThan (Num n1) (Num n2)) = if n1 < n2 then BTrue else BFalse
+step (GreaterThan (Num n1) (Num n2)) = if n1 > n2 then BTrue else BFalse
 step (Paren e) = e
 step (App (Lam x t b) e2) | isValue e2 = subst x e2 b 
                         | otherwise = (App (Lam x t b) (step e2))

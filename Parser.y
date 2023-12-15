@@ -35,6 +35,8 @@ import Lexer
     Bool        { TokenBoolean }
     Num         { TokenNumber }
     ':'         { TokenColon }
+    '<'         { TokenLessThan }
+    '>'         { TokenGreaterThan }
 
 %%
 
@@ -54,6 +56,9 @@ Exp         : num                           { Num $1 }
             | Exp Exp                       { App $1 $2 }
             | '(' Exp ')'                   { Paren $2 }
             | let var '=' Exp in Exp        { Let $2 $4 $6 }
+            | Exp '<' Exp                   { LessThan $1 $3 }
+            | Exp '>' Exp                   { GreaterThan $1 $3 }
+
 
 Type    : Bool                              { TBool }
         | Num                               { TNum }
