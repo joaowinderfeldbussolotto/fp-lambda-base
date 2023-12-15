@@ -5,6 +5,7 @@ import Data.Char
 data Expr = BTrue
           | BFalse 
           | Num Int 
+          | Equality Expr Expr
           | Add Expr Expr 
           | And Expr Expr 
           | Or Expr Expr
@@ -16,7 +17,7 @@ data Expr = BTrue
           | Let String Expr Expr 
           | Mul Expr Expr
           | Sub Expr Expr
-          deriving Show
+          deriving (Show, Eq)
 
 data Ty = TBool 
         | TNum 
@@ -28,6 +29,7 @@ data Token = TokenTrue
            | TokenNum Int 
            | TokenAdd
            | TokenOr
+           | TokenEquality
            | TokenAnd 
            | TokenIf 
            | TokenThen 
@@ -74,6 +76,7 @@ lexSymbol cs = case span isSymb cs of
                  ("\\", rest) -> TokenLam : lexer rest 
                  ("->", rest) -> TokenArrow : lexer rest 
                  ("=", rest)  -> TokenEq : lexer rest 
+                 ("==", rest) -> TokenEquality : lexer rest 
                  (":", rest)  -> TokenColon : lexer rest 
                  _ -> error "Lexical error: invalid symbol!"
 

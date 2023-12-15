@@ -12,6 +12,7 @@ import Lexer
 
 %token 
     num         { TokenNum $$ }
+    '=='        { TokenEquality }
     '+'         { TokenAdd }
     '-'         { TokenSub }
     '*'         { TokenMul }
@@ -39,6 +40,7 @@ import Lexer
 Exp         : num                           { Num $1 }
             | true                          { BTrue }
             | false                         { BFalse }
+            | Exp '==' Exp                  { Equality $1 $3 }
             | Exp '+' Exp                   { Add $1 $3 }
             | Exp '-' Exp                   { Sub $1 $3 } 
             | Exp '*' Exp                   { Mul $1 $3 }
