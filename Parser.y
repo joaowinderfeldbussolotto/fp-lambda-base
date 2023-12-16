@@ -37,6 +37,8 @@ import Lexer
     ':'         { TokenColon }
     '<'         { TokenLessThan }
     '>'         { TokenGreaterThan }
+    where       { TokenWhere }
+    ':='        { TokenWhereAssign }
 
 %%
 
@@ -58,6 +60,7 @@ Exp         : num                           { Num $1 }
             | let var '=' Exp in Exp        { Let $2 $4 $6 }
             | Exp '<' Exp                   { LessThan $1 $3 }
             | Exp '>' Exp                   { GreaterThan $1 $3 }
+            | Exp where var ':=' Exp        { Where $1 $3 $5 }
 
 
 Type    : Bool                              { TBool }

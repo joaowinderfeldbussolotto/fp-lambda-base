@@ -20,6 +20,7 @@ data Expr = BTrue
           | Sub Expr Expr
           | LessThan Expr Expr
           | GreaterThan Expr Expr
+          | Where Expr String Expr 
           deriving (Show, Eq)
 
 data Ty = TBool 
@@ -53,6 +54,8 @@ data Token = TokenTrue
            | TokenSub
            | TokenLessThan
            | TokenGreaterThan
+           | TokenWhere
+           | TokenWhereAssign
            deriving (Show, Eq)
 
 isSymb :: Char -> Bool 
@@ -86,7 +89,8 @@ lexSymbol cs = case span isSymb cs of
                  (":", rest)  -> TokenColon : lexer rest 
                  ("!", rest) -> TokenNot : lexer rest 
                  ("<", rest) -> TokenLessThan: lexer rest   
-                 (">", rest) -> TokenGreaterThan: lexer rest             
+                 (">", rest) -> TokenGreaterThan: lexer rest   
+                 (":=", rest) -> TokenWhereAssign: lexer rest             
                  _ -> error "Lexical error: invalid symbol!"
 
 lexKW :: String -> [Token]
@@ -100,6 +104,7 @@ lexKW cs = case span isAlpha cs of
              ("in", rest) -> TokenIn : lexer rest 
              ("Num", rest) -> TokenNumber : lexer rest 
              ("Bool", rest) -> TokenBoolean : lexer rest 
+             ("where", rest) -> TokenWhere : lexer rest 
              (var, rest) -> TokenVar var : lexer rest 
 
 
